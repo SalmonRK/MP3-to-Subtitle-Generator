@@ -1,0 +1,5 @@
+"srt_env/" 
+"models/*.pt" 
+"output/"  
+"*.mp3"  
+"*.MP3" 
