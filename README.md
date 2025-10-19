@@ -1,176 +1,113 @@
-# Audio to SRT Generator (Portable Version)
+# Audio to SRT Generator (Thai Language)
 
-This tool converts audio files to SRT subtitle format with Thai language support. This portable version includes all Whisper models locally, allowing it to work without an internet connection after initial setup.
+แปลงไฟล์เสียง MP3 เป็นไฟล์คำบรรยาย SRT ภาษาไทย ด้วย AI 2 โมเดล:
+- **Whisper Large** จาก OpenAI - รองรับหลายภาษา
+- **Typhoon ASR** จาก SCB10X - เพิ่มความแม่นยำเฉพาะภาษาไทย
 
-## Features
+## การใช้งาน
 
-- Converts MP3 and other audio formats to SRT subtitles
-- Transcribes audio using OpenAI Whisper models (offline, portable)
-- Transcribes text to Thai language
-- Generates properly formatted SRT files with timestamps
-- **NEW:** Works completely offline after initial model download
-
-## Requirements
-
-- Python 3.6 or higher
-- FFmpeg (required by pydub for audio processing)
-- Internet connection (only for initial model download)
-
-## Portable Setup
-
-### First Time Setup (with Internet)
-
-1. Install FFmpeg:
-   - Download from https://ffmpeg.org/download.html
-   - Add FFmpeg to your system PATH
-
-2. Run the installation batch file to set up everything:
-   ```
-   install.bat
-   ```
-   
-   This will:
-   - Create a virtual environment
-   - Install all required dependencies
-   - Download Whisper models to the `models` folder (this may take a while)
-   
-3. After installation, run the generation script:
-   ```
-   generate_srt.bat
-   ```
-   
-   This will process `Jasmali.MP3` and create Thai subtitles
-
-### Portable Usage (without Internet)
-
-After the first-time setup, the entire SRT-Generator folder is completely portable. You can:
-- Copy the entire folder to another computer
-- Run `generate_srt.bat` without an internet connection
-- All models are included locally in the `models` folder
-
-## Usage
-
-### Quick Start (Windows)
-
-First, make sure you've run `install.bat` at least once to set up the environment.
-
-Then run the generation script:
+### 1. การติดตั้งครั้งแรก
+```bash
+install.bat
 ```
+จะติดตั้ง:
+- สร้าง Virtual Environment
+- ติดตั้ง Python packages ที่จำเป็น
+- ดาวน์โหลดโมเดล Whisper (ใช้เวลาสักครู่)
+
+### 2. การสร้างคำบรรยาย
+
+#### วิธีง่ายที่สุด (ใช้ไฟล์ audio_file.mp3)
+```bash
 generate_srt.bat
 ```
 
-This will process `Jasmali.MP3` and create `output\Jasmali.thai.srt` with Thai subtitles.
-
-For custom audio files, you can use:
-```
-generate_srt_custom.bat your_audio_file.mp3
+#### สำหรับไฟล์เสียงอื่น
+```bash
+generate_srt_custom.bat "ชื่อไฟล์.mp3"
 ```
 
-### Unicode and Thai Filename Support
-The generator now supports Unicode filenames, including Thai characters:
-```
-generate_srt_custom.bat "ชื่อไฟล์ภาษาไทย.mp3"
-```
-The output SRT file will be named with the same base name as the input file.
+### 3. การใช้งานขั้นสูง (เลือกโมเดลเอง)
 
-### Manual Usage
-
-Run the Python script directly:
-```
-python audio_to_srt.py input_file.mp3 -o output_file.srt -s source_lang -t target_lang
+Activate environment ก่อน:
+```bash
+srt_env\Scripts\activate
 ```
 
-Note: All output files will be saved in the `output` directory.
+ใช้ Whisper Large:
+```bash
+python audio_to_srt.py "ไฟล์เสียง.mp3" --model whisper --model-size large --verbose
 ```
 
-#### Parameters
+ใช้ Typhoon ASR (แม่นยำสำหรับไทย):
+```bash
+python audio_to_srt.py "ไฟล์เสียง.mp3" --model typhoon --verbose
+```
 
-- `input_file`: Path to the input audio file (required)
-- `-o, --output`: Path to the output SRT file (optional, defaults to input filename with .srt extension)
-- `-s, --source`: Source language code (optional, default: "en" for English)
-- `-t, --target`: Target language code for translation (optional, default: "th" for Thai)
-- `-d, --duration`: Chunk duration in milliseconds (optional, default: 30000)
+### 4. ทดสอบการใช้งาน Typhoon บน GPU
 
-#### Examples
+สำหรับทดสอบประสิทธิภาพของโมเดล Typhoon บน GPU:
+```bash
+python test_typhoon_simple.py
+```
 
-1. Convert English MP3 to Thai SRT:
-   ```
-   python audio_to_srt.py "Jasmali.MP3" -o "Jasmali.thai.srt" -s en -t th
-   ```
-   The output will be saved to `output/Jasmali.thai.srt`
+สคริปต์นี้จะ:
+- ตรวจสอบข้อมูลระบบและ GPU
+- ทดสอบโหลดโมเดล Typhoon บน GPU
+- ทดสอบการแปลงเสียงเป็นข้อความภาษาไทย
+- สร้างไฟล์ SRT พร้อมการแบ่งย่อหน้าที่เหมาะสม
+- บันทึกรายงานผลการทดสอบ
 
-2. Process with different chunk size (for better accuracy with long files):
-   ```
-   python audio_to_srt.py "audio.mp3" -d 15000
-   ```
+Deactivate:
+```bash
+deactivate
+```
 
-3. Create subtitles in the same language as the audio:
-   ```
-   python audio_to_srt.py "thai_audio.mp3" -s th -t th
-   ```
+## พารามิเตอร์ที่สำคัญ
 
-## Output
+| พารามิเตอร์ | คำอธิบาย | ตัวอย่าง |
+|------------|----------|----------|
+| `--model` | เลือกโมเดล (whisper/typhoon) | `--model whisper` |
+| `--model-size` | ขนาดโมเดล Whisper | `--model-size large` |
+| `--gpu` | ใช้ GPU (ถ้ามี) | `--gpu` |
+| `--no-gpu` | ไม่ใช้ GPU | `--no-gpu` |
+| `--verbose` | แสดงรายละเอียด | `--verbose` |
 
-The script generates an SRT file with Thai subtitles that can be used with video players that support subtitle loading.
+## ผลลัพธ์
 
-## Portable Version Details
+- ไฟล์ SRT จะถูกสร้างในโฟลเดอร์ `output/`
+- รองรับชื่อไฟล์ภาษาไทย
+- ใช้ Encoding UTF-8 สำหรับภาษาไทย
 
-### Model Information
+## เปรียบเทียบโมเดล
 
-The portable version includes the following Whisper models in the `models` folder:
-- tiny.pt (~39MB) - Fastest, least accurate
-- base.pt (~74MB) - Good balance
-- small.pt (~244MB) - More accurate
-- medium.pt (~769MB) - Very accurate
-- large.pt (~1550MB) - Most accurate (used by default)
+| โมเดล | ความแม่นยำ (ภาษาไทย) | ความเร็ว | หน่วยความจำ |
+|--------|---------------------|--------|------------|
+| Whisper Large | ดี | เร็ว (GPU) | สูง (~3GB) |
+| Typhoon ASR | ดีเยี่ยม | เร็วมาก (GPU) | ปานกลาง (~2GB) |
 
-### Folder Structure
+## ข้อควรรู้
 
-After setup, your SRT-Generator folder will contain:
+- **Whisper**: เหมาะสำหรับเสียงหลายภาษา หรือมีคำศัพท์เฉพาะทาง
+- **Typhoon**: เหมาะสำหรับเสียงไทยล้วน ต้องการความแม่นยำสูงสุด
+- ต้องการ GPU เพื่อความเร็วในการประมวลผล
+- ถ้าไม่มี GPU จะใช้ CPU แทน (ช้ากว่า)
+
+## แก้ไขปัญหา
+
+1. **ไม่เจอโมเดล**: รัน `install.bat` ใหม่
+2. **ข้อความภาษาไทยผิดพลาด**: ลองเปลี่ยนโมเดล
+3. **ช้าเกินไป**: ใช้ `--gpu` ถ้ามีการ์ดจอ
+4. **ไฟล์เสียงไม่มีคำพูด**: ตรวจสอบคุณภาพเสียง
+
+## โครงสร้างโฟลเดอร์
+
 ```
 SRT-Generator/
-├── models/               # Contains Whisper model files
-│   ├── tiny.pt
-│   ├── base.pt
-│   ├── small.pt
-│   ├── medium.pt
-│   ├── large.pt
-│   └── model_info.txt
-├── srt_env/             # Python virtual environment
-├── output/              # Generated SRT files
-├── audio_to_srt.py      # Main script
-├── setup_models.py      # Model download script
-├── install.bat          # Installation script
-├── generate_srt.bat     # Generation script for Jasmali.MP3
-├── generate_srt_custom.bat # Generation script for custom files
-├── requirements.txt     # Python dependencies
-└── README.md           # This file
-```
-
-### Making It Portable
-
-To make the application portable:
-1. Run `install.bat` once with an internet connection to download all models
-2. The entire folder can now be copied to any computer
-3. Run `generate_srt.bat` on the new computer without an internet connection
-
-## Troubleshooting
-
-- If you get an error about FFmpeg, make sure it's installed and added to your system PATH
-- For large files, consider reducing the chunk duration with the `-d` parameter
-- If the transcription quality is poor, ensure the audio has clear speech and minimal background noise
-- If models are not found locally, the script will attempt to download them (requires internet)
-- If you're having issues with the portable version, delete the `models` folder and run the setup again
-
-## Supported Languages
-
-The script supports all languages supported by Whisper. Common language codes include:
-
-- English: `en`
-- Thai: `th`
-- Chinese: `zh`
-- Japanese: `ja`
-- Korean: `ko`
-- Spanish: `es`
-- French: `fr`
-- German: `de`
+├── models/           # โมเดล Whisper
+├── srt_env/          # Virtual Environment
+├── output/           # ไฟล์ SRT ที่สร้าง
+├── audio_to_srt.py   # Script หลัก
+├── install.bat       # ติดตั้งครั้งแรก
+├── generate_srt.bat  # สร้างคำบรรยาย (ไฟล์ default)
+└── generate_srt_custom.bat  # สร้างคำบรรยาย (ไฟล์อื่น)

@@ -28,7 +28,7 @@ if not exist "models\large.pt" (
     
     echo.
     echo Downloading Whisper models (this may take a while)...
-    python setup_models.py
+    python scripts\setup_models.py
     
     echo.
     echo Models downloaded successfully!

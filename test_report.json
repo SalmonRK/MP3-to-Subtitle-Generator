@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-10-18 16:43:40",
+  "summary": {
+    "total_tests": 4,
+    "successful": 2,
+    "failed": 2
+  },
+  "results": [
+    {
+      "model": "whisper",
+      "model_size": "large",
+      "audio_file": "Jasmali.MP3",
+      "output_file": "output/Jasmali.whisper.large.003.srt",
+      "total_time": 74.4511342048645,
+      "segments_count": 11,
+      "success": true,
+      "transcription_count": 1,
+      "total_transcription_time": 73.83825755119324,
+      "total_audio_duration": 21.055,
+      "average_transcription_time": 73.83825755119324,
+      "real_time_factor": 3.50692270487738,
+      "quality": {
+        "score": 85,
+        "issues": [
+          "Average segment duration too short"
+        ],
+        "segment_count": 11,
+        "avg_duration": 1.8018181818181818,
+        "avg_chars": 25.545454545454547
+      }
+    },
+    {
+      "model": "typhoon",
+      "model_size": null,
+      "audio_file": "Jasmali.MP3",
+      "error": "No segments generated",
+      "success": false
+    },
+    {
+      "model": "whisper",
+      "model_size": "large",
+      "audio_file": "ขนมครก.MP3",
+      "output_file": "output/ขนมครก.whisper.large.003.srt",
+      "total_time": 6.634528875350952,
+      "segments_count": 7,
+      "success": true,
+      "transcription_count": 1,
+      "total_transcription_time": 6.115795135498047,
+      "total_audio_duration": 30.929,
+      "average_transcription_time": 6.115795135498047,
+      "real_time_factor": 0.1977365946360389,
+      "quality": {
+        "score": 75,
+        "issues": [
+          "Average segment duration too short",
+          "Too many very short segments (4)"
+        ],
+        "segment_count": 7,
+        "avg_duration": 1.4314285714285713,
+        "avg_chars": 16.857142857142858
+      }
+    },
+    {
+      "model": "typhoon",
+      "model_size": null,
+      "audio_file": "ขนมครก.MP3",
+      "error": "No segments generated",
+      "success": false
+    }
+  ],
+  "comparison": {}
+}

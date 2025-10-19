@@ -1,0 +1,11 @@
+Whisper Models for Portable SRT Generator
+==========================================
+
+This directory contains the Whisper models needed for offline operation.
+
+Available models:
+- tiny.pt (144.1MB)
+- base.pt (277.0MB)
+- small.pt (922.3MB)
+- medium.pt (not downloaded)
+- large.pt (5888.3MB)

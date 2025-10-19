@@ -22,8 +22,8 @@ if not exist "models\large.pt" (
 )
 
 REM Set default values
-set INPUT_FILE=Jasmali.MP3
-set OUTPUT_FILE=Jasmali.thai.srt
+set INPUT_FILE=audio_file.mp3
+set OUTPUT_FILE=audio_file.thai.srt
 set SOURCE_LANG=th
 set TARGET_LANG=th
 
